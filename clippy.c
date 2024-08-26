@@ -13,7 +13,7 @@ static void create() {
 
   set_short("clippy");
 
-  set_long("Clippy, the happy programming helper. It activates when your current directory is different than your home directory. After a successful refresh, it will start tracking that file. After the timestamp of that file changes, it will automatically refresh that file, and whatever errors happens Clippy will print out to you. In addition it does:\n\n * If it detects an inheritance hierarchy, with exact file name, like inherit \"/d/Golem/lib/guildlevel\";, it will refresh things with this inherit if guildlevel.c changes.\n * If an item in your inventory is refreshed, it will destroy that clone and create a new one.\n\nIf there is no change within a little period of time, Clippy will stop scanning the files you have freshed. Just fresh any file, and it will resume. \n\nIf you want to clear what filed clippy is tracking, use \"track clear\".\n\nIf you want to auto run tests upon an object refreshed, add a function string meta_test() which should return file name of the test.");
+  set_long("Clippy, the happy programming helper. It activates when your current directory is different than your home directory. After a successful refresh, it will start tracking that file. After the timestamp of that file changes, it will automatically refresh that file, and whatever errors happens Clippy will print out to you. In addition it does:\n\n * If it detects an inheritance hierarchy, with exact file name, like inherit \"/d/Golem/lib/guildlevel\";, it will refresh things with this inherit if guildlevel.c changes.\n * If an item in your inventory is refreshed, it will destroy that clone and create a new one.\n\nIf there is no change within a little period of time, Clippy will stop scanning the files you have freshed. Just fresh any file, and it will resume. \n\nIf you want to clear what files clippy is tracking, use \"track clear\".\n\nIf you want to auto run tests upon an object refreshed, add a function string meta_test() which should return file name of the test.");
 
   set_drop(NO_DROP);
 
@@ -126,14 +126,14 @@ void check_consistency(string arg, string env) {
   if(!this_player()) {
     return;
   }
+
+  thing = find_object(env);
   
-  if(!find_object(env)) {
+  if(!thing) {
     return;
   }
   
-  if(arg == "env") {
-    thing = find_object(env);
-  } else {
+  if(arg != "env") {
     thing = find_object(arg);
 
     if(!thing) {

@@ -110,22 +110,25 @@ void run_tests(string file) {
 }
 
 void refresh_objects_in_inventory(object tp, object ob) {
-  object *c;
+  object *inv;
   int i;
+  string filename;
+
+  filename = file_name(ob);
   
-  c = children(ob);
+  inv = all_inventory(tp);
 
-  for(i=sizeof(c); i--;) {
-    if(present(c[i], tp)) {
+  for(i=sizeof(inv);i--;) {
+    if(file_name(inv[i]) == filename) {
       object n;
-      n = clone_object(c[i]);
+      n = clone_object(filename);
 
-      printf("Replacing %O with %O in your inventory.\n", c[i], n);
-      c[i]->destroy();
+      printf("Replacing %O with %O in your inventory.\n", inv[i], n);
+      inv[i]->destroy();
       n->move(tp);
+
     }
   }
-  
 }
 
 void reload_file(string file, object tp) {
@@ -133,6 +136,10 @@ void reload_file(string file, object tp) {
   string *k;
   int i;
   object ob;
+
+  if(!tp) {
+    return;
+  }
   
   tp->command("fresh "+file);
   
