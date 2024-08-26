@@ -121,9 +121,22 @@ void refresh_objects_in_inventory(object tp, object ob) {
   for(i=sizeof(inv);i--;) {
     if(file_name(inv[i]) == filename) {
       object n;
+      string autoload_info;
+      
       n = clone_object(filename);
 
       printf("Replacing %O with %O in your inventory.\n", inv[i], n);
+
+      /* Fetches auto load info and transfers it to next object */
+      autoload_info = inv[i]->query_auto_load();
+      if(autoload_info) {
+	string info;
+	
+	if(sscanf(autoload_info, "%*s:%s", info) == 2) {
+	  n->init_arg(info);
+	}
+      }
+      
       inv[i]->destroy();
       n->move(tp);
 
